@@ -12,7 +12,7 @@
 容量的默认大小是 16，负载因子是 0.75，当 `HashMap` 的 `size > 16*0.75` 时就会发生扩容(容量和负载因子都可以自由调整)。
 
 
-### put 方法
+## put 方法
 首先会将传入的 Key 做 `hash` 运算计算出 hashcode,然后根据数组长度取模计算出在数组中的 index 下标。
 
 由于在计算中位运算比取模运算效率高的多，所以 HashMap 规定数组的长度为 `2^n` 。
@@ -22,13 +22,13 @@
 HashMap 会在 `table[index]`处形成环形链表，采用头插法将数据插入到链表中。
 
 
-### get 方法
+## get 方法
 
 get 和 put 类似，也是将传入的 Key 计算出 index ，如果该位置上是一个链表就需要遍历整个链表，
 通过 `key.equals(k)` 来找到对应的元素。
 
 
-### 遍历方式
+## 遍历方式
 
 ```java
 Iterator<Map.Entry<String, Integer>> entryIterator = map.entrySet().iterator();
@@ -58,7 +58,7 @@ map.forEach((key,value)->{
 第一种可以把 key value 同时取出，第二种还得需要通过 key 取一次 value，效率较低, 
 第三种需要 `JDK1.8` 以上，通过外层遍历 table，内层遍历链表或红黑树。 
 
-### 特别说明
+## 特别说明
 
 在并发环境下使用 `HashMap` 容易出现死循环。
 

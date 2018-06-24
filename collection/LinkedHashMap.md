@@ -13,7 +13,7 @@ HashMap是一个无序的 `Map`，因为每次根据 `key` 的 `hashcode` 映射
 
 其中根据访问顺序排序时，每次 `get` 都会将访问的值移动到链表末尾，这样重复操作就能的到一个按照访问顺序排序的链表。
 
-### 数据结构
+## 数据结构
 
 ```java
 @Test
@@ -82,7 +82,7 @@ public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder)
 这个构造方法可以显示的传入 `accessOrder `。
 
 
-### 构造方法
+## 构造方法
 
 `LinkedHashMap` 的构造方法:
 
@@ -126,7 +126,7 @@ void init() {
 ```
 其实也就是对 `header` 进行了初始化。
 
-### put() 方法
+## put() 方法
 
 看 `LinkedHashMap` 的 `put()` 方法之前先看看 `HashMap` 的 `put` 方法：
 
@@ -220,7 +220,7 @@ private void addBefore(Entry<K,V> existingEntry) {
         
 ```
 
-### get 方法
+## get 方法
 
 LinkedHashMap 的 `get()` 方法也重写了：
 
@@ -258,7 +258,7 @@ public void clear() {
 }
 ```
 
-### 总结
+## 总结
 
 总的来说 `LinkedHashMap` 其实就是对 `HashMap` 进行了拓展，使用了双向链表来保证了顺序性。
 
