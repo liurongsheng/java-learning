@@ -70,6 +70,7 @@ public 返回数据类型方法名( 参数列表)
 
 ## 类的成员方法-- 声明
 public int test(int a); /* 方法声明*/
+
 访问修饰符 数据类型 函数名( 参数列表);
 区别就是没有函数体
 
@@ -224,7 +225,300 @@ protected 修饰符的属性和方法；
 4. 在做开发的时候，强烈建议大家多查jdk 帮助文档
 5. 在使用类时，实在不知道怎么办，多使用搜索引擎
 
-## 方法重载(overload) 和方法覆盖
+## 方法重载(overload) 和方法覆盖(override)
 
-//page 32
+>方法重载(overload)
+
+简单的说： 方法重载就是在类的同一种功能的多种实现方式，到底采用哪种方式，取决于调用者给出的参数。
+注意事项：
+1. 方法名相同
+2. 方法的参数类型，个数，顺序至少有一项不同
+3. 方法返回类型可以不同(只是返回类型不一样，不能构成重载)
+4. 方法的修饰符可以不同(只是控制访问修饰符不同，不能构成重载)
+
+ >方法覆盖(override)
+ 
+ 方法覆盖就是子类有一个方法， 和父类的某个方法的名称、返回类型、参数一样，
+ 那么我们就说子类的这个方法覆盖了父类的那个方法。
+ 
+ 方法覆盖有很多条件，有些书上说的比较细，总的讲有两点一定注意：
+ 1. 子类的方法的返回类型，参数，方法名称，要和父类的返回类型，参数，方法名称完全一样，否则编译出错。
+ 2. 子类方法不能缩小父类方法的访问权限。
+
+## 多态
+就是指一个引用( 类型) 在不同情况下的多种状态。
+也可以理解成： 多态是指通过指向父类的指针，来调用在不同子类中实现的方法。
+
+实现多态有两种方式：
+1. 继承
+2. 接口 
+```java
+package com.liu.test;
+
+public class Test {
+	public static void main(String[] args) {
+		// 非多态演示
+		Cat cat = new Cat();
+		cat.cry();
+		Dog dog = new Dog();
+		dog.cry();
+		// 多态演示
+		Animal an = new Cat();
+		an.cry();
+		an = new Dog();
+		an.cry();
+	}
+}
+
+// 动物类
+class Animal {
+	String name;
+	int age;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	// 动物会叫
+	public void cry() {
+		System.out.println(" 不知道怎么叫");
+	}
+}
+
+// 创建Dog子类并继承Animal 父类及覆盖cry 方法
+class Dog extends Animal {
+	// 狗叫
+	public void cry() {
+		System.out.println(" 汪汪叫");
+	}
+}
+
+class Cat extends Animal {
+	// 猫自己叫
+	public void cry() {
+		System.out.println(" 猫猫叫");
+	}
+}
+---
+ 猫猫叫
+ 汪汪叫
+ 猫猫叫
+ 汪汪叫
+```
+java 允许父类的引用变量引用它的子类的实例( 对象)
+Animal an=new Cat(); // 这种转换时自动完成的
+
+## 抽象类
+
+当父类的一些方法不能确定时，可以用abstract 关键字来修饰该方法[抽象方法] ，用abstract 来修饰该类[抽象类] 。
+
+抽象类是java 中一个比较重要的类。
+1. 用abstract 关键字来修饰一个类时，这个类就是抽象类。
+2. 用abstract 关键字来修饰一个方法时，这个方法就是抽象方法。
+3. abstract 抽象类中的abstract 抽象方法是不允许在抽象类中实现的，一旦实现就不是
+抽象方法和抽象类了。abstract 抽象方法只能在子类中实现。
+4. 抽象类中可以拥有实现方法。
+5. 抽象方法在编程中用的不是很多，但是在公司笔试时，却是考官比较爱问的知识点。
+
+注意事项：
+1. 抽象类不能被实例化
+2. 抽象类不一定要包含abstract 方法。也就是说，抽象类可以没有abstract 抽象方法。
+3. 一旦类包含了abstract 抽象方法，则这个类必须声明为abstract 抽象类。
+4. 抽象方法不能有主体。
+    1. 正确的抽象方法例： abstract void abc();
+    2. 错语的抽象方法例： abstract void abc(){}
+    
+## 接口
+接口-- 为什么有？
+
+USB插槽就是现实中的接口。
+
+什么是接口？
+
+接口就是给出一些没有内容的方法，封装到一起，到某个类要使用的时候，在根据具体情况把这些方法写出来。
+
+接口的建立语法： interface 接口名{ 方法;}
+语法： 
+```
+class 类名 implements 接口{
+    方法;
+    变量;
+}    
+```
+接口是更加抽象的抽象的类，抽象类里的方法可以有方法体，接口里的所有方法都没有方法体。
+接口体现了程序设计的多态和高内聚低偶合的设计思想。
+
+注意事项
+1. 接口不能被实例化
+2. 接口中所有的方法都不能有主体。错误语法例：void aaa(){} ←( 注意不能有花括号)
+接口可以看作更加抽象的抽象类。
+3. 一个类可以实现多个接口
+4. 接口中可以有变量[ 但变量不能用private 和protected 修饰]
+    1. 接口中的变量，本质上都是static 的而且是final 类型的，不管你加不加static 修饰
+    2 . 在java 开发中，我们经常把常用的变量，定义在接口中，作为全局变量使用访问形式：接口名. 变量名
+5. 一个接口不能继承其它的类，但是可以继承别的接口
+```java
+package com.liu.test;
+
+public class Usb {
+	public static void main(String[] args) {
+		UsbInterface u = new Camera();
+		u.start();
+		u.stop();
+	}
+}
+
+interface UsbInterface {
+	int a = 1; // 加不加static 都是静态的，不能用private 和protected 修饰
+// 声明了两个方法
+
+	public void start(); // 接口开始工作
+
+	public void stop(); // 接口停止工作
+}
+
+// 编写了一个相机类，并实现了UsbInterface 接口
+//一个重要的原则：当一个类实现了一个接口，要求该类把这个接口的所有方法全部实现
+class Camera implements UsbInterface {
+	public void start() {
+		System.out.println(" 我是相机，开始工作了..");
+	}
+
+	public void stop() {
+		System.out.println(" 我是相机，停止工作了..");
+	}
+}
+---
+ 我是相机，开始工作了..
+ 我是相机，停止工作了..
+```
+
+## 实现接口 VS 继承类
+java 的继承是单继承，也就是一个类最多只能有一个父类，这种单继承的机制可保证类的纯洁性，
+比C++中的多继承机制简洁。但是不可否认，对子类功能的扩展有一定影响。
+
+所以：
+1. 实现接口可以看作是对继承的一种补充。(继承是层级式的，不太灵活。修改某个类就会打破继承的平衡，
+而接口就没有这样的麻烦，因为它只针对实现接口的类才起作用)
+
+2. 实现接口可在不打破继承关系的前提下，对某个类功能扩展，非常灵活。
+
+
+### 用接口实现多态
+java 中多态是个难以理解的概念，但同时又是一个非常重要的概念。java 三大特性之一( 继承，封装，多态)，
+我们可以从字面上简单理解：就是一种类型的多种状态，以下通过卖小汽车的例子说明什么是多态。
+
+```java
+package com.liu.test;
+
+public class Test {
+
+	public static void main(String[] args) {
+		CarShop aShop = new CarShop();
+		// 卖出一辆宝马
+		aShop.sellCar(new BMW());
+		// 卖出一辆奇瑞QQ
+		aShop.sellCar(new CheryQQ());
+		// 卖出一辆桑塔纳
+		aShop.sellCar(new Santana());
+		System.out.println(" 总收入： " + aShop.getMoney());
+	}
+}
+
+// 汽车接口
+interface Car {
+	// 汽车名称
+	String getName();
+
+	// 获得汽车售价
+	int getPrice();
+}
+
+// 宝马
+class BMW implements Car {
+	public String getName() {
+		return "BMW";
+	}
+
+	public int getPrice() {
+		return 300000;
+	}
+}
+
+// 奇瑞QQ
+class CheryQQ implements Car {
+	public String getName() {
+		return "CheryQQ";
+	}
+
+	public int getPrice() {
+		return 20000;
+	}
+}
+
+// 桑塔纳汽车
+class Santana implements Car {
+	public String getName() {
+		return "Santana";
+	}
+
+	public int getPrice() {
+		return 80000;
+	}
+}
+
+// 汽车出售店
+class CarShop {
+	// 售车收入
+	private int money = 0;
+
+	// 卖出一部车
+	public void sellCar(Car car) {
+		System.out.println(" 车型： " + car.getName() + " 单价： " + car.getPrice());
+		// 增加卖出车售价的收入
+		money += car.getPrice();
+	}
+
+	// 售车总收入
+	public int getMoney() {
+		return money;
+	}
+}
+---
+ 车型： BMW 单价： 300000
+ 车型： CheryQQ 单价： 20000
+ 车型： Santana 单价： 80000
+ 总收入： 400000
+
+```
+继承是多态得以实现的基础。
+从字面上理解，多态就是一种类型( 都是Car 类型) 表现出多种状态
+( 宝马汽车的名称是BMW，售价是300000；奇瑞汽车的名称是CheryQQ，售价是2000) 。
+
+将一个方法调用同这个方法所属的主体( 也就是对象或类) 关联起来叫做绑定，分前期绑这下和后期绑定两种。
+
+下面解释一下它们的定义：
+1. 前期绑定：在程序运行之前进行绑定，由编译器和连接程序实现，又叫做静态绑定。
+比如static 方法和final 方法，注意，这里也包括private 方法，因为它是隐式final 的。
+
+2. 后期绑定：在运行时根据对象的类型进行绑定，由方法调用机制实现，因此又叫做动态绑定，
+或者运行时绑定。除了前期绑定外的所有方法都属于后期绑定。
+
+多态就是在后期绑定这种机制上实现的。
+多态给我们带来的好处是消除了类之间的偶合关系，使程序更容易扩展。
+
+比如在上例中， 新增加一种类型汽车的销售。只需要让新定义的类实现Car 类并实现它的所有方法， 
+而无需对原有代码做任何修改， CarShop 类的sellCar(Carcar) 方法就可以处理新的车型了。
 
