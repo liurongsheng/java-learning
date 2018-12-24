@@ -101,8 +101,76 @@ DriverManager是JDBC的管理层，作用于用户和驱动程序之间。Driver
 – 可重复读（Repeatable Read)
 – 序列化（serializable)
 
+## 时间类型
 
+java.util.Date
+- 子类：java.sql.Date 表示年月日
+- 子类：java.sql.Time 表示时分秒
+- 子类：java.sql.Timestamp 表示年月日时分秒
 
+日期比较处理
+- 插入随机日期
+- 取出指定日期范围的记录 
+  
+```
+public static long str2Date(String dateStr){
+  DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+  try {
+    return format.parse(dateStr).getTime();
+  } catch (ParseException e) {
+    e.printStackTrace();
+    return 0;
+  }
+}
+
+ps = conn.prepareStatement("select * from t_user where lastLoginTime>? and lastLoginTime<? order by lastLoginTime ");
+Timestamp start = new Timestamp(str2Date("2015-4-18 8:10:20"));
+Timestamp end = new Timestamp(str2Date("2015-4-18 9:9:10"));
+ps.setObject(1, start);
+ps.setObject(2, end);
+```
+
+## CLOB
+• CLOB（Character Large Object）
+  – 用于存储大量的文本数据。
+  – 大字段有些特殊，不同数据库处理的方式不一样，大字段的操作常常是以流的方式来处理的。而非一般的字段，一次即可读出数据。
+• Mysql中相关类型：
+  – TINYTEXT最大长度为255(2^[8]–1)字符的TEXT列。
+  – TEXT[(M)]最大长度为65,535(2^[16]–1)字符的TEXT列。
+  – MEDIUMTEXT最大长度为16,777,215(2^[24]–1)字符的TEXT列。
+  – LONGTEXT最大长度为4,294,967,295或4GB(2^[32]–1)字符的TEXT列
+
+## BLOB
+• BLOB（Binary Large Object）
+  – 用于存储大量的二进制数据
+  – 大字段有些特殊，不同数据库处理的方式不一样，大字段的操作常常是以流的方式来处理的。而非一般的字段，一次即可读出数据。
+• Mysql中相关类型：
+  – TINYBLOB最大长度为255(2^[8]–1)字节的BLOB列。
+  – BLOB[(M)]最大长度为65,535(2^[16]–1)字节的BLOB列。
+  – MEDIUMBLOB最大长度为16,777,215(2^[24]–1)字节的BLOB列。
+  – LONGBLOB最大长度为4,294,967,295或4GB(2^[32]–1)字节的BLOB列。
+
+## 经典代码
+
+使用资源文件存储数据库连接信息
+mysqlDriver=com.mysql.jdbc.Driver
+mysqlURL=jdbc\:mysql\://localhost\:3306/testjdbc
+mysqlUser=root
+mysqlPwd=123456
+
+oracleDriver=oracle.jdbc.driver.OracleDriver
+oracleURL=jdbc\:oracle\:thin\:@localhost\:1521\:orcl
+oracleUser=scott
+oraclePwd=tiger
+
+## ORM
+• ORM(Object Relationship Mapping)的基本思想
+  – 表结构跟类对应； 表中字段和类的属性对应；表中记录和对象对应；
+  – 让javabean的属性名和类型尽量和数据库保持一致！
+  – 一条记录对应一个对象。将这些查询到的对象放到容器中(List,Set,Map)
+• 将表中的一条记录封装到Object数组中
+• 将表中的一条记录封装到map中
+• 将表中一条记录封装到javabean对象中
 
 
 
